@@ -1,7 +1,26 @@
 const express = require("express");
-const Produit = require("./model"); 
+const Produit = require("../Model/productModel"); 
+const multer = require("multer");
+const path = require("path");
 
 const route = express.Router();
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/"); 
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname)); 
+    },
+  });
+
+
+  const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, 
+  });
+
 
 // Get all products
 route.get("/", async (req, res) => {
@@ -29,13 +48,14 @@ route.get("/:id", async (req, res) => {
 });
 
 // Add new product
-route.post("/", async (req, res) => {
+route.post("/", upload.single("image"), async (req, res) => {
   try {
     const newProduct = new Produit({
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
       stock: req.body.stock,
+      image: req.file ? `/uploads/${req.file.filename}` : "",
     });
 
     await newProduct.save();
