@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from './components/Sidebar';
 import './App.css'
 import AddProduct from './components/addProduct'
+import DisplayProducts from './components/DisplayProducts';
+import EditProduct from './components/EditProduct';
 
 function App() {
-  const [count, setCount] = useState(0)
+ /*  const [count, setCount] = useState(0) */
 
   return (
    <Router>
@@ -14,7 +16,9 @@ function App() {
       <div className="flex-1">
         <Routes>
             <Route path="/create" element={<AddProduct />} />
-            <Route path="/" element={<AddProduct />} /> {/* Default route */}
+            <Route path="/edit/:id" element={<EditProduct />} /> 
+            <Route path="/display" element={<DisplayProducts />} />
+            <Route path="/" element={<AddProduct />} /> 
         </Routes>
       </div>
      </div>

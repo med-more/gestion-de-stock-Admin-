@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const DisplayProducts = () => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -28,6 +29,10 @@ const DisplayProducts = () => {
       console.error("Erreur lors de la suppression:", error);
       toast.error("Erreur lors de la suppression du produit");
     }
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/edit/${id}`);
   };
 
   return (
@@ -88,12 +93,12 @@ const DisplayProducts = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Link 
-                      to={`/edit/${product._id}`} 
+                    <button 
+                      onClick={() => handleEdit(product._id)} 
                       className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm"
                     >
                       Modifier
-                    </Link>
+                    </button>
                     <button 
                       onClick={() => handleDelete(product._id)} 
                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm"
